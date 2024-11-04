@@ -1,0 +1,193 @@
+2024-10-31 11:10:06 | Starting MoneyTransferServiceApplication using Java 19.0.1 with PID 46588 (F:\Work\JavaNetology\Money_Trancfer_Service\target\classes started by PsyDuck in F:\Work\JavaNetology\Money_Trancfer_Service)
+2024-10-31 11:10:06 | No active profile set, falling back to 1 default profile: "default"
+2024-10-31 11:10:06 | Tomcat initialized with port 8080 (http)
+2024-10-31 11:10:06 | Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-31 11:10:06 | Starting service [Tomcat]
+2024-10-31 11:10:06 | Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-10-31 11:10:06 | Initializing Spring embedded WebApplicationContext
+2024-10-31 11:10:06 | Root WebApplicationContext: initialization completed in 860 ms
+2024-10-31 11:10:07 | Exposing 1 endpoint beneath base path '/actuator'
+2024-10-31 11:10:07 | Starting ProtocolHandler ["http-nio-8080"]
+2024-10-31 11:10:07 | Tomcat started on port 8080 (http) with context path '/'
+2024-10-31 11:10:07 | Started MoneyTransferServiceApplication in 1.669 seconds (process running for 2.003)
+2024-10-31 11:10:39 | Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-31 11:10:39 | Initializing Servlet 'dispatcherServlet'
+2024-10-31 11:10:39 | Completed initialization in 1 ms
+2024-10-31 11:10:39 | Перевод: 4300 1111 2222 3333 | 4300 9999 8888 7777 | Сумма: {:.2f} | Комиссия: {:.2f} | Результат: 1000.0
+2024-10-31 11:11:45 | Starting MoneyTransferServiceApplication using Java 19.0.1 with PID 128768 (F:\Work\JavaNetology\Money_Trancfer_Service\target\classes started by PsyDuck in F:\Work\JavaNetology\Money_Trancfer_Service)
+2024-10-31 11:11:45 | No active profile set, falling back to 1 default profile: "default"
+2024-10-31 11:11:45 | Tomcat initialized with port 8080 (http)
+2024-10-31 11:11:45 | Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-31 11:11:45 | Starting service [Tomcat]
+2024-10-31 11:11:45 | Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-10-31 11:11:45 | Initializing Spring embedded WebApplicationContext
+2024-10-31 11:11:45 | Root WebApplicationContext: initialization completed in 756 ms
+2024-10-31 11:11:46 | Exposing 1 endpoint beneath base path '/actuator'
+2024-10-31 11:11:46 | Starting ProtocolHandler ["http-nio-8080"]
+2024-10-31 11:11:46 | Tomcat started on port 8080 (http) with context path '/'
+2024-10-31 11:11:46 | Started MoneyTransferServiceApplication in 1.504 seconds (process running for 1.741)
+2024-10-31 11:37:41 | Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-31 11:37:41 | Initializing Servlet 'dispatcherServlet'
+2024-10-31 11:37:41 | Completed initialization in 1 ms
+2024-10-31 11:37:41 | Перевод: 4300 1111 2222 3333 | 4300 9999 8888 7777 | Сумма: 1000.0 | Комиссия: 10.0 | Результат: Positive
+2024-11-01 14:48:23 | Starting MoneyTransferServiceApplication using Java 19.0.1 with PID 163988 (F:\Work\JavaNetology\Money_Trancfer_Service\target\classes started by PsyDuck in F:\Work\JavaNetology\Money_Trancfer_Service)
+2024-11-01 14:48:23 | No active profile set, falling back to 1 default profile: "default"
+2024-11-01 14:48:24 | Tomcat initialized with port 8080 (http)
+2024-11-01 14:48:24 | Initializing ProtocolHandler ["http-nio-8080"]
+2024-11-01 14:48:24 | Starting service [Tomcat]
+2024-11-01 14:48:24 | Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-11-01 14:48:24 | Initializing Spring embedded WebApplicationContext
+2024-11-01 14:48:24 | Root WebApplicationContext: initialization completed in 965 ms
+2024-11-01 14:48:25 | Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moneyTransferController' defined in file [F:\Work\JavaNetology\Money_Trancfer_Service\target\classes\org\netology\ru\money_transfer_service\controller\MoneyTransferController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'moneyTransferService' defined in file [F:\Work\JavaNetology\Money_Trancfer_Service\target\classes\org\netology\ru\money_transfer_service\service\MoneyTransferService.class]: Unsatisfied dependency expressed through constructor parameter 0: No qualifying bean of type 'org.netology.ru.money_transfer_service.repository.CreateCardList' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2024-11-01 14:48:25 | Stopping service [Tomcat]
+2024-11-01 14:48:25 | 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2024-11-01 14:48:25 | 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in org.netology.ru.money_transfer_service.service.MoneyTransferService required a bean of type 'org.netology.ru.money_transfer_service.repository.CreateCardList' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'org.netology.ru.money_transfer_service.repository.CreateCardList' in your configuration.
+
+2024-11-01 15:08:57 | Starting MoneyTransferServiceApplication using Java 19.0.1 with PID 165676 (F:\Work\JavaNetology\Money_Trancfer_Service\target\classes started by PsyDuck in F:\Work\JavaNetology\Money_Trancfer_Service)
+2024-11-01 15:08:57 | No active profile set, falling back to 1 default profile: "default"
+2024-11-01 15:08:58 | Tomcat initialized with port 8080 (http)
+2024-11-01 15:08:58 | Initializing ProtocolHandler ["http-nio-8080"]
+2024-11-01 15:08:58 | Starting service [Tomcat]
+2024-11-01 15:08:58 | Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-11-01 15:08:58 | Initializing Spring embedded WebApplicationContext
+2024-11-01 15:08:58 | Root WebApplicationContext: initialization completed in 833 ms
+2024-11-01 15:08:58 | Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moneyTransferController' defined in file [F:\Work\JavaNetology\Money_Trancfer_Service\target\classes\org\netology\ru\money_transfer_service\controller\MoneyTransferController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'moneyTransferService' defined in file [F:\Work\JavaNetology\Money_Trancfer_Service\target\classes\org\netology\ru\money_transfer_service\service\MoneyTransferService.class]: Unsatisfied dependency expressed through constructor parameter 0: No qualifying bean of type 'org.netology.ru.money_transfer_service.repository.CreateCardList' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2024-11-01 15:08:58 | Stopping service [Tomcat]
+2024-11-01 15:08:58 | 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2024-11-01 15:08:58 | 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in org.netology.ru.money_transfer_service.service.MoneyTransferService required a bean of type 'org.netology.ru.money_transfer_service.repository.CreateCardList' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'org.netology.ru.money_transfer_service.repository.CreateCardList' in your configuration.
+
+2024-11-01 15:10:00 | Starting MoneyTransferServiceApplication using Java 19.0.1 with PID 164924 (F:\Work\JavaNetology\Money_Trancfer_Service\target\classes started by PsyDuck in F:\Work\JavaNetology\Money_Trancfer_Service)
+2024-11-01 15:10:00 | No active profile set, falling back to 1 default profile: "default"
+2024-11-01 15:10:01 | Tomcat initialized with port 8080 (http)
+2024-11-01 15:10:01 | Initializing ProtocolHandler ["http-nio-8080"]
+2024-11-01 15:10:01 | Starting service [Tomcat]
+2024-11-01 15:10:01 | Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-11-01 15:10:01 | Initializing Spring embedded WebApplicationContext
+2024-11-01 15:10:01 | Root WebApplicationContext: initialization completed in 816 ms
+2024-11-01 15:10:01 | Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moneyTransferController' defined in file [F:\Work\JavaNetology\Money_Trancfer_Service\target\classes\org\netology\ru\money_transfer_service\controller\MoneyTransferController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'moneyTransferService' defined in file [F:\Work\JavaNetology\Money_Trancfer_Service\target\classes\org\netology\ru\money_transfer_service\service\MoneyTransferService.class]: Unsatisfied dependency expressed through constructor parameter 0: No qualifying bean of type 'org.netology.ru.money_transfer_service.repository.CreateCardList' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2024-11-01 15:10:01 | Stopping service [Tomcat]
+2024-11-01 15:10:01 | 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2024-11-01 15:10:01 | 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in org.netology.ru.money_transfer_service.service.MoneyTransferService required a bean of type 'org.netology.ru.money_transfer_service.repository.CreateCardList' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'org.netology.ru.money_transfer_service.repository.CreateCardList' in your configuration.
+
+2024-11-01 15:18:00 | Starting MoneyTransferServiceApplication using Java 19.0.1 with PID 164360 (F:\Work\JavaNetology\Money_Trancfer_Service\target\classes started by PsyDuck in F:\Work\JavaNetology\Money_Trancfer_Service)
+2024-11-01 15:18:00 | No active profile set, falling back to 1 default profile: "default"
+2024-11-01 15:18:01 | Tomcat initialized with port 8080 (http)
+2024-11-01 15:18:01 | Initializing ProtocolHandler ["http-nio-8080"]
+2024-11-01 15:18:01 | Starting service [Tomcat]
+2024-11-01 15:18:01 | Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-11-01 15:18:01 | Initializing Spring embedded WebApplicationContext
+2024-11-01 15:18:01 | Root WebApplicationContext: initialization completed in 768 ms
+2024-11-01 15:18:01 | Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moneyTransferController' defined in file [F:\Work\JavaNetology\Money_Trancfer_Service\target\classes\org\netology\ru\money_transfer_service\controller\MoneyTransferController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'moneyTransferService' defined in file [F:\Work\JavaNetology\Money_Trancfer_Service\target\classes\org\netology\ru\money_transfer_service\service\MoneyTransferService.class]: Unsatisfied dependency expressed through constructor parameter 0: No qualifying bean of type 'org.netology.ru.money_transfer_service.repository.CreateCardList' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2024-11-01 15:18:01 | Stopping service [Tomcat]
+2024-11-01 15:18:01 | 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2024-11-01 15:18:01 | 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in org.netology.ru.money_transfer_service.service.MoneyTransferService required a bean of type 'org.netology.ru.money_transfer_service.repository.CreateCardList' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'org.netology.ru.money_transfer_service.repository.CreateCardList' in your configuration.
+
+2024-11-01 15:18:46 | Starting MoneyTransferServiceApplication using Java 19.0.1 with PID 165704 (F:\Work\JavaNetology\Money_Trancfer_Service\target\classes started by PsyDuck in F:\Work\JavaNetology\Money_Trancfer_Service)
+2024-11-01 15:18:46 | No active profile set, falling back to 1 default profile: "default"
+2024-11-01 15:18:47 | Tomcat initialized with port 8080 (http)
+2024-11-01 15:18:47 | Initializing ProtocolHandler ["http-nio-8080"]
+2024-11-01 15:18:47 | Starting service [Tomcat]
+2024-11-01 15:18:47 | Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-11-01 15:18:47 | Initializing Spring embedded WebApplicationContext
+2024-11-01 15:18:47 | Root WebApplicationContext: initialization completed in 780 ms
+2024-11-01 15:18:48 | Exposing 1 endpoint beneath base path '/actuator'
+2024-11-01 15:18:48 | Starting ProtocolHandler ["http-nio-8080"]
+2024-11-01 15:18:48 | Tomcat started on port 8080 (http) with context path '/'
+2024-11-01 15:18:48 | Started MoneyTransferServiceApplication in 1.611 seconds (process running for 1.841)
+2024-11-01 15:18:55 | Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-11-01 15:18:55 | Initializing Servlet 'dispatcherServlet'
+2024-11-01 15:18:55 | Completed initialization in 1 ms
+2024-11-02 18:22:58 | Starting MoneyTransferServiceApplication using Java 19.0.1 with PID 191144 (F:\Work\JavaNetology\Money_Trancfer_Service\target\classes started by PsyDuck in F:\Work\JavaNetology\Money_Trancfer_Service)
+2024-11-02 18:22:58 | No active profile set, falling back to 1 default profile: "default"
+2024-11-02 18:22:59 | Tomcat initialized with port 8080 (http)
+2024-11-02 18:22:59 | Initializing ProtocolHandler ["http-nio-8080"]
+2024-11-02 18:22:59 | Starting service [Tomcat]
+2024-11-02 18:22:59 | Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-11-02 18:22:59 | Initializing Spring embedded WebApplicationContext
+2024-11-02 18:22:59 | Root WebApplicationContext: initialization completed in 927 ms
+2024-11-02 18:22:59 | Exposing 1 endpoint beneath base path '/actuator'
+2024-11-02 18:22:59 | Starting ProtocolHandler ["http-nio-8080"]
+2024-11-02 18:22:59 | Tomcat started on port 8080 (http) with context path '/'
+2024-11-02 18:22:59 | Started MoneyTransferServiceApplication in 1.879 seconds (process running for 2.421)
+2024-11-02 18:23:12 | Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-11-02 18:23:12 | Initializing Servlet 'dispatcherServlet'
+2024-11-02 18:23:12 | Completed initialization in 0 ms
+2024-11-02 18:23:12 | Перевод: 4300 1111 2222 3333 | 4300 9999 8888 7777 | Сумма: 1000.0 | Комиссия: 10.0 | Результат: Positive
+2024-11-04 00:57:15 | Starting MoneyTransferServiceApplication using Java 19.0.1 with PID 229288 (F:\Work\JavaNetology\Money_Trancfer_Service\target\classes started by PsyDuck in F:\Work\JavaNetology\Money_Trancfer_Service)
+2024-11-04 00:57:15 | No active profile set, falling back to 1 default profile: "default"
+2024-11-04 00:57:16 | Tomcat initialized with port 8080 (http)
+2024-11-04 00:57:16 | Initializing ProtocolHandler ["http-nio-8080"]
+2024-11-04 00:57:16 | Starting service [Tomcat]
+2024-11-04 00:57:16 | Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-11-04 00:57:16 | Initializing Spring embedded WebApplicationContext
+2024-11-04 00:57:16 | Root WebApplicationContext: initialization completed in 1055 ms
+2024-11-04 00:57:17 | Exposing 1 endpoint beneath base path '/actuator'
+2024-11-04 00:57:17 | Starting ProtocolHandler ["http-nio-8080"]
+2024-11-04 00:57:17 | Tomcat started on port 8080 (http) with context path '/'
+2024-11-04 00:57:17 | Started MoneyTransferServiceApplication in 2.026 seconds (process running for 2.489)
+2024-11-04 00:57:26 | Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-11-04 00:57:26 | Initializing Servlet 'dispatcherServlet'
+2024-11-04 00:57:26 | Completed initialization in 0 ms
+2024-11-04 00:57:26 | Перевод: 4300 1111 2222 3333 | 4300 9999 8888 7777 | Сумма: 1000.0 | Комиссия: 10.0 | Результат: Недействительная карта отправителя
+2024-11-04 00:57:55 | Перевод: 4300 1111 2222 3333 | 4300 9999 8888 7777 | Сумма: 50000.0 | Комиссия: 500.0 | Результат: Недостаточно средств
+2024-11-04 00:58:01 | Перевод: 4300 1111 2222 3333 | 4300 9999 8888 7777 | Сумма: 200.0 | Комиссия: 2.0 | Результат: Перевод выполнен

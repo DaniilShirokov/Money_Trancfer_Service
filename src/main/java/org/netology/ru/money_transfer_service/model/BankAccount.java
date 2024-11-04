@@ -12,28 +12,15 @@ public class BankAccount {
     String cardNumner;
     String cardValidTill;
     String CVV;
-    Integer moneyValue;
-    String currency;
+    Amount amount;
     String phoneNumber;
 
-    public BankAccount(String cardNumner,String cvv, String phoneNumber, String currency, Integer moneyValue, String cardValidTill) {
+    public BankAccount(String cardNumner,String cvv, String phoneNumber, Amount amount, String cardValidTill) {
         this.cardNumner = cardNumner;
         this.phoneNumber = phoneNumber;
         this.CVV = cvv;
-        this.currency = currency;
-        this.moneyValue = moneyValue;
+        this.amount = amount;
         this.cardValidTill = cardValidTill;
     }
 
-    @Override
-    public String toString() {
-        return "BankAccount{" +
-                "cardNumner='" + cardNumner + '\'' +
-                ", cardValidTill='" + cardValidTill + '\'' +
-                ", CVV='" + CVV + '\'' +
-                ", moneyValue=" + moneyValue +
-                ", currency='" + currency + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
-    }
 }

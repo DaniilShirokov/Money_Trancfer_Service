@@ -1,12 +1,10 @@
 package org.netology.ru.money_transfer_service.controller;
 
-import org.netology.ru.money_transfer_service.model.BankAccount;
-import org.netology.ru.money_transfer_service.model.ObjectForTrancfer;
+import org.netology.ru.money_transfer_service.model.InputObjectForTrancfer;
 import org.netology.ru.money_transfer_service.service.MoneyTransferService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.text.ParseException;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -18,7 +16,14 @@ public class MoneyTransferController {
     }
 
     @PostMapping("/trancfer")
-        public void postTrancfer(@RequestBody ObjectForTrancfer objectForTrancfer)  {
-            service.makeTransfer(objectForTrancfer);
-        }
+    public ResponseEntity<?> postTrancfer(@RequestBody InputObjectForTrancfer objectForTrancfer)  {
+          return service.makeTransfer(objectForTrancfer);
+
+    }
+
+    @PostMapping("/confirmOperation")
+    public ResponseEntity<?> confirmOperation () {
+        return null;
+    }
+
 }
