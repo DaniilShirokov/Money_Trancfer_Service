@@ -1,9 +1,6 @@
 package org.netology.ru.money_transfer_service.service;
 
-import org.netology.ru.money_transfer_service.model.BankAccount;
-import org.netology.ru.money_transfer_service.model.ErrorResponse;
-import org.netology.ru.money_transfer_service.model.InputObjectForTrancfer;
-import org.netology.ru.money_transfer_service.model.TransferResponse;
+import org.netology.ru.money_transfer_service.model.*;
 import org.netology.ru.money_transfer_service.repository.CreateCardList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
-@Service
+@Service()
 public class MoneyTransferService {
     private static final Logger logger = LoggerFactory.getLogger(MoneyTransferService.class);
     private static final Double COMMISION  = 0.01;
@@ -23,6 +22,8 @@ public class MoneyTransferService {
     public MoneyTransferService(CreateCardList repository) {
         this.repository = repository;
     }
+    Map<String, String> confirmOperationList = new ConcurrentHashMap<>();
+    Map<String, InputObjectForTrancfer> operationDataList = new ConcurrentHashMap<>();
 
 
     public ResponseEntity<?> makeTransfer(InputObjectForTrancfer objectForTrancfer) {
@@ -65,9 +66,36 @@ public class MoneyTransferService {
             return ResponseEntity.badRequest().body(errorResponse);
         }
 
-        setLogger(objectForTrancfer, "Перевод выполнен");
+        var setOperationId = "op-" + System.currentTimeMillis();
+        String code = generateCode();
+        System.out.println("На номер отправлен код подтверждения " + code);
+        confirmOperationList.put(setOperationId,code);
+        operationDataList.put(setOperationId, objectForTrancfer);
+
+        System.out.println(confirmOperationList.toString());
+        setLogger(objectForTrancfer, "Требуется подтверждение");
         TransferResponse response = new TransferResponse();
-        response.setOperationId("op-" + System.currentTimeMillis()); // Генерация уникального ID операции
+        response.setOperationId(setOperationId);
+
+        return ResponseEntity.ok(response);
+    }
+
+    public ResponseEntity<?> confirmOperation (ConfirmOperationObject confirmOperationObject) {
+        if (!confirmOperationList.get(confirmOperationObject.getOperationId()).equals(confirmOperationObject.getCode())) {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setMessage("Неверный индентефикатор операции");
+            errorResponse.setId(5);
+            return ResponseEntity.badRequest().body(errorResponse);
+        }
+        var  objectForOperation = operationDataList.get(confirmOperationObject.getOperationId());
+        trancferMoney(objectForOperation);
+
+        var setOperationId = "op-" + System.currentTimeMillis();
+        operationDataList.put(setOperationId, objectForOperation);
+
+        setLogger(objectForOperation, "Перевод согласован, денежные средства переедены");
+        TransferResponse response = new TransferResponse();
+        response.setOperationId(setOperationId);
         return ResponseEntity.ok(response);
     }
 
@@ -109,10 +137,38 @@ public class MoneyTransferService {
     }
 
     private void setLogger(InputObjectForTrancfer objectForTrancfer, String status) {
-
         logger.info("Перевод: {} | {} | Сумма: {} | Комиссия: {} | Результат: {}",
                 objectForTrancfer.getCardFromNumber(), objectForTrancfer.getCardToNumber(), objectForTrancfer.getAmount().getValue(), objectForTrancfer.getAmount().getValue() * COMMISION, status);
+    }
 
+    private String generateCode() {
+        Random random = new Random();
+        int number = random.nextInt(10000);
+        return String.format("%04d", number);
+    }
+
+    private void trancferMoney(InputObjectForTrancfer objectForTrancfer) {
+        Map<Long, BankAccount> bankAccountList = repository.createBankAccountList();
+        Long keyFromCard = findKey(objectForTrancfer.getCardFromNumber().replaceAll("\\s+", ""));
+        Long keyToCard = findKey(objectForTrancfer.getCardFromNumber().replaceAll("\\s+", ""));
+
+        var currentAmoutFromCard = bankAccountList.get(keyFromCard).getAmount();
+        var currentAmountToCard = bankAccountList.get(keyToCard).getAmount();
+        bankAccountList.get(keyFromCard).setAmount(currentAmoutFromCard.getValue() - objectForTrancfer.getAmount().getValue() - (objectForTrancfer.getAmount().getValue()*COMMISION));
+        bankAccountList.get(keyToCard).setAmount(currentAmountToCard.getValue() +  objectForTrancfer.getAmount().getValue());
+    }
+
+    private Long findKey(String cardNumber) {
+        Map<Long, BankAccount> bankAccountList = repository.createBankAccountList();
+        Long key = null;
+        for (Map.Entry<Long, BankAccount> entry : bankAccountList.entrySet()) {
+            BankAccount account = entry.getValue();
+            if (account.getCardNumner().equals(cardNumber)) {
+                key = entry.getKey();
+                break;
+            }
+        }
+        return key;
     }
 
 

@@ -23,4 +23,6 @@ public class BankAccount {
         this.cardValidTill = cardValidTill;
     }
 
+    public void setAmount(double v) {
+    }
 }
