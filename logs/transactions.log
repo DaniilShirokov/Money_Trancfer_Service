@@ -605,3 +605,19 @@ java.lang.NullPointerException: Cannot invoke "Object.hashCode()" because "key" 
 2024-11-06 15:58:44 | Completed initialization in 0 ms
 2024-11-06 15:58:44 | Перевод: 4300 1111 2222 3333 | 4300 9999 8888 7777 | Сумма: 200.0 | Комиссия: 2.0 | Результат: Требуется подтверждение
 2024-11-06 15:59:34 | Перевод: 4300 1111 2222 3333 | 4300 9999 8888 7777 | Сумма: 200.0 | Комиссия: 2.0 | Результат: Перевод согласован, денежные средства переедены
+2024-11-07 17:51:53 | Starting MoneyTransferServiceApplication using Java 19.0.1 with PID 314776 (F:\Work\JavaNetology\Money_Trancfer_Service\target\classes started by PsyDuck in F:\Work\JavaNetology\Money_Trancfer_Service)
+2024-11-07 17:51:53 | No active profile set, falling back to 1 default profile: "default"
+2024-11-07 17:51:54 | Tomcat initialized with port 8080 (http)
+2024-11-07 17:51:54 | Initializing ProtocolHandler ["http-nio-8080"]
+2024-11-07 17:51:54 | Starting service [Tomcat]
+2024-11-07 17:51:54 | Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-11-07 17:51:54 | Initializing Spring embedded WebApplicationContext
+2024-11-07 17:51:54 | Root WebApplicationContext: initialization completed in 1013 ms
+2024-11-07 17:51:54 | Exposing 1 endpoint beneath base path '/actuator'
+2024-11-07 17:51:54 | Starting ProtocolHandler ["http-nio-8080"]
+2024-11-07 17:51:54 | Tomcat started on port 8080 (http) with context path '/'
+2024-11-07 17:51:54 | Started MoneyTransferServiceApplication in 1.931 seconds (process running for 2.181)
+2024-11-07 17:56:17 | Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-11-07 17:56:17 | Initializing Servlet 'dispatcherServlet'
+2024-11-07 17:56:17 | Completed initialization in 0 ms
+2024-11-07 17:56:17 | Перевод: 4300 1111 2222 3333 | 4300 9999 8888 7777 | Сумма: 200.0 | Комиссия: 2.0 | Результат: Требуется подтверждение

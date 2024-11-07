@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  backend:
+    build:
+      context: ./
+    image: moneytransferservice:1.0
+    ports:
+      - "5500:5500"
+    networks:
+      - app-network
+
+
+
+networks:
+  app-network:
+    driver: bridge
+

@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/posts")
 public class MoneyTransferController {
     private final MoneyTransferService service;
 
@@ -16,7 +15,7 @@ public class MoneyTransferController {
         this.service = service;
     }
 
-    @PostMapping("/trancfer")
+    @PostMapping("/transfer")
     public ResponseEntity<?> postTrancfer(@RequestBody InputObjectForTrancfer objectForTrancfer)  {
           return service.makeTransfer(objectForTrancfer);
 

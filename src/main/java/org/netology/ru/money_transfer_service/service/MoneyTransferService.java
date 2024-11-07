@@ -17,14 +17,15 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service()
 public class MoneyTransferService {
     private static final Logger logger = LoggerFactory.getLogger(MoneyTransferService.class);
-    private static final Double COMMISION  = 0.01;
+    private static final Double COMMISION = 0.01;
     private final CreateCardList repository;
+
     public MoneyTransferService(CreateCardList repository) {
         this.repository = repository;
     }
+
     Map<String, String> confirmOperationList = new ConcurrentHashMap<>();
     Map<String, InputObjectForTrancfer> operationDataList = new ConcurrentHashMap<>();
-
 
     public ResponseEntity<?> makeTransfer(InputObjectForTrancfer objectForTrancfer) {
         Map<Long, BankAccount> bankAccountList = repository.createBankAccountList();
@@ -42,7 +43,7 @@ public class MoneyTransferService {
             setLogger(objectForTrancfer, "Некорректные данные карты");
             return ResponseEntity.badRequest().body(errorResponse);
         }
-        if (!cheakCardFromValidTill(cardFrom.get().getCardValidTill(), objectForTrancfer.getCardFromValidTill())) {
+        if (!checkCardFromValidTill(cardFrom.get().getCardValidTill(), objectForTrancfer.getCardFromValidTill())) {
             ErrorResponse errorResponse = new ErrorResponse();
             errorResponse.setMessage("Недействительная карта отправителя");
             errorResponse.setId(2);
@@ -50,7 +51,7 @@ public class MoneyTransferService {
             return ResponseEntity.badRequest().body(errorResponse);
         }
 
-        if (!cheakCardFromCVV(cardFrom.get().getCVV(), objectForTrancfer.getCardFromCVV())) {
+        if (!checkCardFromCVV(cardFrom.get().getCVV(), objectForTrancfer.getCardFromCVV())) {
             ErrorResponse errorResponse = new ErrorResponse();
             errorResponse.setMessage("Недействительная код CVC");
             errorResponse.setId(3);
@@ -58,7 +59,7 @@ public class MoneyTransferService {
             return ResponseEntity.badRequest().body(errorResponse);
         }
 
-        if (!cheakAmount(cardFrom.get().getAmount().getValue(), objectForTrancfer.getAmount().getValue())) {
+        if (!checkAmount(cardFrom.get().getAmount().getValue(), objectForTrancfer.getAmount().getValue())) {
             ErrorResponse errorResponse = new ErrorResponse();
             errorResponse.setMessage("Недостаточно средств");
             errorResponse.setId(4);
@@ -69,7 +70,7 @@ public class MoneyTransferService {
         var setOperationId = "op-" + System.currentTimeMillis();
         String code = generateCode();
         System.out.println("На номер отправлен код подтверждения " + code);
-        confirmOperationList.put(setOperationId,code);
+        confirmOperationList.put(setOperationId, code);
         operationDataList.put(setOperationId, objectForTrancfer);
 
         System.out.println(confirmOperationList.toString());
@@ -80,15 +81,15 @@ public class MoneyTransferService {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<?> confirmOperation (ConfirmOperationObject confirmOperationObject) {
+    public ResponseEntity<?> confirmOperation(ConfirmOperationObject confirmOperationObject) {
         if (!confirmOperationList.get(confirmOperationObject.getOperationId()).equals(confirmOperationObject.getCode())) {
             ErrorResponse errorResponse = new ErrorResponse();
             errorResponse.setMessage("Неверный индентефикатор операции");
             errorResponse.setId(5);
             return ResponseEntity.badRequest().body(errorResponse);
         }
-        var  objectForOperation = operationDataList.get(confirmOperationObject.getOperationId());
-        trancferMoney(objectForOperation);
+        var objectForOperation = operationDataList.get(confirmOperationObject.getOperationId());
+        transferMoney(objectForOperation);
 
         var setOperationId = "op-" + System.currentTimeMillis();
         operationDataList.put(setOperationId, objectForOperation);
@@ -100,9 +101,7 @@ public class MoneyTransferService {
     }
 
 
-
-
-    private Boolean cheakCardFromValidTill(String accountValidTill, String validTill) {
+    Boolean checkCardFromValidTill(String accountValidTill, String validTill) {
         if (!accountValidTill.equals(validTill)) {
             return false;
         }
@@ -122,17 +121,15 @@ public class MoneyTransferService {
         if (accountYear > currentYear || (accountYear == currentYear && accountMonth >= currentMonth)) {
             return true;
         }
-
         return false;
     }
 
-
-    private Boolean cheakCardFromCVV(String accountCvv, String cvv) {
+    Boolean checkCardFromCVV(String accountCvv, String cvv) {
         return accountCvv.equals(cvv);
     }
 
 
-    private Boolean cheakAmount(Double sumMoneyOnCurd, Double monneySum) {
+    Boolean checkAmount(Double sumMoneyOnCurd, Double monneySum) {
         return (sumMoneyOnCurd - (monneySum + (monneySum * COMMISION))) > 0;
     }
 
@@ -147,18 +144,20 @@ public class MoneyTransferService {
         return String.format("%04d", number);
     }
 
-    private void trancferMoney(InputObjectForTrancfer objectForTrancfer) {
+    Map<Long, BankAccount> transferMoney(InputObjectForTrancfer objectForTrancfer) {
         Map<Long, BankAccount> bankAccountList = repository.createBankAccountList();
         Long keyFromCard = findKey(objectForTrancfer.getCardFromNumber().replaceAll("\\s+", ""));
         Long keyToCard = findKey(objectForTrancfer.getCardFromNumber().replaceAll("\\s+", ""));
 
-        var currentAmoutFromCard = bankAccountList.get(keyFromCard).getAmount();
+        var currentAmountFromCard = bankAccountList.get(keyFromCard).getAmount();
         var currentAmountToCard = bankAccountList.get(keyToCard).getAmount();
-        bankAccountList.get(keyFromCard).setAmount(currentAmoutFromCard.getValue() - objectForTrancfer.getAmount().getValue() - (objectForTrancfer.getAmount().getValue()*COMMISION));
-        bankAccountList.get(keyToCard).setAmount(currentAmountToCard.getValue() +  objectForTrancfer.getAmount().getValue());
+        bankAccountList.get(keyFromCard).setAmount(currentAmountFromCard.getValue() - objectForTrancfer.getAmount().getValue() - (objectForTrancfer.getAmount().getValue() * COMMISION));
+        bankAccountList.get(keyToCard).setAmount(currentAmountToCard.getValue() + objectForTrancfer.getAmount().getValue());
+
+        return bankAccountList;
     }
 
-    private Long findKey(String cardNumber) {
+    Long findKey(String cardNumber) {
         Map<Long, BankAccount> bankAccountList = repository.createBankAccountList();
         Long key = null;
         for (Map.Entry<Long, BankAccount> entry : bankAccountList.entrySet()) {
@@ -170,6 +169,4 @@ public class MoneyTransferService {
         }
         return key;
     }
-
-
 }

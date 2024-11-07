@@ -22,6 +22,7 @@ public class InputObjectForTrancfer {
     @JsonProperty("amount")
     private Amount amount;
 
+
     public InputObjectForTrancfer(String cardFromNumber, String cardFromValidTill, String cardFromCVV, String cardToNumber, Amount amount) {
         this.cardFromNumber = cardFromNumber;
         this.cardFromValidTill = cardFromValidTill;
