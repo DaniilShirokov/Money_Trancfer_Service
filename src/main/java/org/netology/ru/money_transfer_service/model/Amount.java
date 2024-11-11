@@ -1,15 +1,15 @@
 package org.netology.ru.money_transfer_service.model;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 public class Amount {
-    private Integer value;
+    private Double value;
     private String currency;
 
-    public Amount(Integer value, String currency) {
+    public Amount(Double value, String currency) {
         this.value = value;
         this.currency = currency;
     }
