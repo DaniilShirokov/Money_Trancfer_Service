@@ -19,16 +19,18 @@ public class MoneyTransferService {
     private static final Logger logger = LoggerFactory.getLogger(MoneyTransferService.class);
     private static final Double COMMISION = 0.01;
     private final CreateCardList repository;
+    Map<Long, BankAccount> bankAccountList;
 
     public MoneyTransferService(CreateCardList repository) {
         this.repository = repository;
+        this.bankAccountList = repository.createBankAccountList();
     }
 
     Map<String, String> confirmOperationList = new ConcurrentHashMap<>();
     Map<String, InputObjectForTrancfer> operationDataList = new ConcurrentHashMap<>();
 
     public ResponseEntity<?> makeTransfer(InputObjectForTrancfer objectForTrancfer) {
-        Map<Long, BankAccount> bankAccountList = repository.createBankAccountList();
+
         Optional<BankAccount> cardFrom = bankAccountList.values().stream()
                 .filter(account -> account.getCardNumner().replaceAll("\\s+", "").equals(objectForTrancfer.getCardFromNumber().replaceAll("\\s+", "")))
                 .findFirst();
@@ -36,35 +38,16 @@ public class MoneyTransferService {
                 .filter(account -> account.getCardNumner().replaceAll("\\s+", "").equals(objectForTrancfer.getCardToNumber().replaceAll("\\s+", "")))
                 .findFirst();
         if (!cardFrom.isPresent() || !cardTo.isPresent()) {
-
-            ErrorResponse errorResponse = new ErrorResponse();
-            errorResponse.setMessage("Некорректные данные карты");
-            errorResponse.setId(1);
-            setLogger(objectForTrancfer, "Некорректные данные карты");
-            return ResponseEntity.badRequest().body(errorResponse);
+            return createResponse("Некорректные данные карты",1,"Некорректные данные карты",objectForTrancfer);
         }
         if (!checkCardFromValidTill(cardFrom.get().getCardValidTill(), objectForTrancfer.getCardFromValidTill())) {
-            ErrorResponse errorResponse = new ErrorResponse();
-            errorResponse.setMessage("Недействительная карта отправителя");
-            errorResponse.setId(2);
-            setLogger(objectForTrancfer, "Недействительная карта отправителя");
-            return ResponseEntity.badRequest().body(errorResponse);
+            return createResponse("Недействительная карта отправителя",2,"Недействительная карта отправителя",objectForTrancfer);
         }
-
         if (!checkCardFromCVV(cardFrom.get().getCVV(), objectForTrancfer.getCardFromCVV())) {
-            ErrorResponse errorResponse = new ErrorResponse();
-            errorResponse.setMessage("Недействительная код CVC");
-            errorResponse.setId(3);
-            setLogger(objectForTrancfer, "Недействительная код CVC");
-            return ResponseEntity.badRequest().body(errorResponse);
+            return createResponse("Недействительная код CVC",3,"Недействительная код CVC",objectForTrancfer);
         }
-
         if (!checkAmount(cardFrom.get().getAmount().getValue(), objectForTrancfer.getAmount().getValue())) {
-            ErrorResponse errorResponse = new ErrorResponse();
-            errorResponse.setMessage("Недостаточно средств");
-            errorResponse.setId(4);
-            setLogger(objectForTrancfer, "Недостаточно средств");
-            return ResponseEntity.badRequest().body(errorResponse);
+            return createResponse("Недостаточно средств",4,"Недостаточно средств",objectForTrancfer);
         }
 
         var setOperationId = "op-" + System.currentTimeMillis();
@@ -79,6 +62,13 @@ public class MoneyTransferService {
         response.setOperationId(setOperationId);
 
         return ResponseEntity.ok(response);
+    }
+    public ResponseEntity createResponse(String message, Integer idCode, String logerInfo, InputObjectForTrancfer objectForTrancfer) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setMessage(message);
+        errorResponse.setId(idCode);
+        setLogger(objectForTrancfer, logerInfo);
+        return ResponseEntity.badRequest().body(errorResponse);
     }
 
     public ResponseEntity<?> confirmOperation(ConfirmOperationObject confirmOperationObject) {
@@ -101,7 +91,7 @@ public class MoneyTransferService {
     }
 
 
-    Boolean checkCardFromValidTill(String accountValidTill, String validTill) {
+    protected Boolean checkCardFromValidTill(String accountValidTill, String validTill) {
         if (!accountValidTill.equals(validTill)) {
             return false;
         }
@@ -124,12 +114,12 @@ public class MoneyTransferService {
         return false;
     }
 
-    Boolean checkCardFromCVV(String accountCvv, String cvv) {
+    protected Boolean checkCardFromCVV(String accountCvv, String cvv) {
         return accountCvv.equals(cvv);
     }
 
 
-    Boolean checkAmount(Double sumMoneyOnCurd, Double monneySum) {
+    protected Boolean checkAmount(Double sumMoneyOnCurd, Double monneySum) {
         return (sumMoneyOnCurd - (monneySum + (monneySum * COMMISION))) > 0;
     }
 
@@ -144,8 +134,7 @@ public class MoneyTransferService {
         return String.format("%04d", number);
     }
 
-    Map<Long, BankAccount> transferMoney(InputObjectForTrancfer objectForTrancfer) {
-        Map<Long, BankAccount> bankAccountList = repository.createBankAccountList();
+    protected Map<Long, BankAccount> transferMoney(InputObjectForTrancfer objectForTrancfer) {
         Long keyFromCard = findKey(objectForTrancfer.getCardFromNumber().replaceAll("\\s+", ""));
         Long keyToCard = findKey(objectForTrancfer.getCardFromNumber().replaceAll("\\s+", ""));
 
@@ -157,8 +146,7 @@ public class MoneyTransferService {
         return bankAccountList;
     }
 
-    Long findKey(String cardNumber) {
-        Map<Long, BankAccount> bankAccountList = repository.createBankAccountList();
+    protected Long findKey(String cardNumber) {
         Long key = null;
         for (Map.Entry<Long, BankAccount> entry : bankAccountList.entrySet()) {
             BankAccount account = entry.getValue();
