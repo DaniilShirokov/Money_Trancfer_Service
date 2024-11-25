@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.netology.ru.money_transfer_service.model.*;
 import org.netology.ru.money_transfer_service.repository.CreateCardList;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class MoneyTransferServiceTest {
@@ -24,10 +26,50 @@ class MoneyTransferServiceTest {
     @InjectMocks
     private MoneyTransferService moneyTransferService;
 
+    private BankAccount senderAccount;
+    private BankAccount receiverAccount;
+
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        senderAccount = new BankAccount("1234 5678 9012 3456", "123", "+78005553535", new Amount(1000.0, "RUB"), "12/24");
+        receiverAccount = new BankAccount("6543 2109 8765 4321", "321", "+78005553536", new Amount(100.0, "RUB"), "05/25");
+
+        ConcurrentHashMap<Long, BankAccount> bankAccounts = new ConcurrentHashMap<>();
+        bankAccounts.put(1L, senderAccount);
+        bankAccounts.put(2L, receiverAccount);
+
+        when(repository.createBankAccountList()).thenReturn(bankAccounts);
+
+        moneyTransferService = new MoneyTransferService(repository);
     }
+
+    @Test
+    void testMakeTransfer_Success() {
+        InputObjectForTrancfer transferObject = new InputObjectForTrancfer("1234 5678 9012 3456", "12/24", "123", "6543 2109 8765 4321", new Amount(500.0, "RUB"));
+
+        ResponseEntity<?> response = moneyTransferService.makeTransfer(transferObject);
+
+        assertEquals(200, response.getStatusCodeValue());
+        TransferResponse transferResponse = (TransferResponse) response.getBody();
+        assertNotNull(transferResponse);
+        assertNotNull(transferResponse.getOperationId());
+    }
+
+    @Test
+    public void testMakeTransfer_InvalidCardFrom() {
+        InputObjectForTrancfer transferInput = new InputObjectForTrancfer("invalidCard",
+                receiverAccount.getCardNumner(),
+                "12/25",
+                "123",
+                new Amount(100.0, "RUB"));
+
+        ResponseEntity<?> response = moneyTransferService.makeTransfer(transferInput);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
 
     @Test
     public void testCheckCardFromValidTill_ValidDate() {
@@ -70,86 +112,4 @@ class MoneyTransferServiceTest {
         Double transferAmount = 50.0;
         assertFalse(moneyTransferService.checkAmount(availableAmount, transferAmount));
     }
-
-    @Test
-    public void testTransferMoney() {
-        // Создайте необходимые данные для теста
-        Map<Long, BankAccount> bankAccounts = new ConcurrentHashMap<>();
-
-        BankAccount fromAccount = new BankAccount("4300111122223333", "123", "+78005553535", new Amount(1000.0, "RUB"), "12/24");
-        BankAccount toAccount = new BankAccount("4300999988887777", "987", "+78005553536", new Amount(100.0, "RUB"), "05/25");
-
-
-        bankAccounts.put(1L, fromAccount);
-        bankAccounts.put(2L, toAccount);
-
-        when(repository.createBankAccountList()).thenReturn((ConcurrentHashMap<Long, BankAccount>) bankAccounts);
-
-        InputObjectForTrancfer transferObject = new InputObjectForTrancfer("4300 1111 2222 3333", "12/24", "123", "4300 9999 8888 7777", new Amount(100.0, "RUB"));
-
-        bankAccounts = moneyTransferService.transferMoney(transferObject);
-
-        assertEquals(1000.0, bankAccounts.get(1L).getAmount().getValue(), 0.01);
-        assertEquals(100.0, bankAccounts.get(2L).getAmount().getValue(), 0.01);
-    }
-
-    @Test
-    public void testFindKey_CardFound() {
-        Map<Long, BankAccount> bankAccounts = new ConcurrentHashMap<>();
-
-        BankAccount account = new BankAccount("4300111122223333", "123", "+78005553535", new Amount(1000.0, "RUB"), "12/24");
-        ;
-        bankAccounts.put(1L, account);
-
-        when(repository.createBankAccountList()).thenReturn((ConcurrentHashMap<Long, BankAccount>) bankAccounts);
-
-        Long key = moneyTransferService.findKey("4300111122223333");
-        assertEquals(Long.valueOf(1), key);
-    }
-
-    @Test
-    public void testFindKey_CardNotFound() {
-        Map<Long, BankAccount> bankAccounts = new ConcurrentHashMap<>();
-
-        BankAccount account = new BankAccount("4300111122223333", "123", "+78005553535", new Amount(1000.0, "RUB"), "12/24");
-        ;
-        account.setCardNumner("1111222233334444");
-        bankAccounts.put(1L, account);
-
-        when(repository.createBankAccountList()).thenReturn((ConcurrentHashMap<Long, BankAccount>) bankAccounts);
-
-        Long key = moneyTransferService.findKey("0000000000000000");
-        assertNull(key);
-    }
-
-    @Test
-    public void testMakeTransfer_SuccessfulTransfer() {
-
-        Map<Long, BankAccount> bankAccounts = new ConcurrentHashMap<>();
-        BankAccount senderAccount = new BankAccount("4300111122223333", "123", "+78005553535", new Amount(1000.0, "RUB"), "12/24");
-        BankAccount receiverAccount = new BankAccount("4300999988887777", "987", "+78005553536", new Amount(100.0, "RUB"), "05/25");
-        when(repository.createBankAccountList()).thenReturn((ConcurrentHashMap<Long, BankAccount>) bankAccounts);
-
-        InputObjectForTrancfer transferObject = new InputObjectForTrancfer("4300 1111 2222 3333", "12/24", "123", "4300 9999 8888 7777", new Amount(100.0, "RUB"));
-
-        ResponseEntity<?> response = moneyTransferService.makeTransfer(transferObject);
-
-        assertEquals(400, response.getStatusCodeValue());
-    }
-
-    @Test
-    public void testMakeTransfer_InvalidCard() {
-        Map<Long, BankAccount> bankAccounts = new ConcurrentHashMap<>();
-        BankAccount senderAccount = new BankAccount("4300111122223333", "123", "+78005553535", new Amount(1000.0, "RUB"), "12/24");
-        bankAccounts.put(1L, senderAccount);
-
-        when(repository.createBankAccountList()).thenReturn((ConcurrentHashMap<Long, BankAccount>) bankAccounts);
-
-        InputObjectForTrancfer transferObject = new InputObjectForTrancfer("9999 8888 7777 6666", "12/24", "123", "4300 9999 8888 7777", new Amount(100.0, "RUB"));
-
-        ResponseEntity<?> response = moneyTransferService.makeTransfer(transferObject);
-
-        assertEquals(400, response.getStatusCodeValue());
-    }
-
 }

@@ -15,6 +15,7 @@ public class MoneyTransferController {
         this.service = service;
     }
 
+
     @PostMapping("/transfer")
     public ResponseEntity<?> postTrancfer(@RequestBody InputObjectForTrancfer objectForTrancfer)  {
           return service.makeTransfer(objectForTrancfer);
